@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Text-to-Speech Synthesis</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Text-to-Speech Synthesis</h1>
+    <textarea id="text" placeholder="Enter text"></textarea>
+    <button id="synthesizeBtn">Synthesize</button>
+    <div id="message"></div>
+    <a id="downloadLink" href="#" style="display: none;">Download</a>
+
+    <script>
+        $(document).ready(function () {
+            $('#synthesizeBtn').click(function () {
+                var text = $('#text').val();
+
+                if (text.trim() === "") {
+                    alert('Please enter some text.');
+                    return;
+                }
+
+                $('#message').text('Synthesizing...');
+
+                $.post('/synthesize', { text: text })
+                    .done(function () {
+                        $('#message').text('Success');
+                        $('#downloadLink').attr('href', '/download').show();
+                    })
+                    .fail(function () {
+                        $('#message').text('Failed to synthesize.');
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
